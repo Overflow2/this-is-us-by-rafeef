@@ -1,4 +1,6 @@
 import React from 'react';
+import logo1 from '../assets/logo1.svg';
+
 
 export const Logo: React.FC = () => {
   return (
@@ -16,3 +18,4 @@ export const Logo: React.FC = () => {
   );
 
 };
+
