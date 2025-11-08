@@ -6,7 +6,7 @@ export const Logo: React.FC = () => {
   return (
     <div className="flex justify-center w-full mb-4">
       <img 
-        src="../assets/logo1.svg" 
+        src="/logo1.svg" 
         alt="This Is Us Logo" 
         className="w-40 h-40 md:w-48 md:h-48"
         style={{
@@ -18,4 +18,5 @@ export const Logo: React.FC = () => {
   );
 
 };
+
 
