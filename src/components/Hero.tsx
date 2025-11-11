@@ -5,9 +5,9 @@ import { Logo } from './Logo';
 
 
 const founders = [
-  { id: 1, name: 'Rafeef Ammar', role: 'Visionary', color: '#00FFFF' },
-  { id: 2, name: 'Erfan Noor Mahin', role: 'Architect', color: '#6366F1' },
-  { id: 3, name: 'Marjan Ahsan', role: 'Catalyst', color: '#B5179E' }
+  { id: 1, name: 'Rafeef Ammar', role: 'Visionary', color: '#8b5cf6' }, // purple-500
+  { id: 2, name: 'Erfan Noor Mahin', role: 'Architect', color: '#0ea5e9' }, // primary-500
+  { id: 3, name: 'Marjan Ahsan', role: 'Catalyst', color: '#a78bfa' } // secondary-400
 ];
 
 export const Hero = () => {
@@ -64,15 +64,15 @@ export const Hero = () => {
     <section
       id="hero"
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#050B16] via-[#0a1428] to-[#050B16]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0c0a1d] via-[#120f2d] to-[#0c0a1d]"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,255,0.03),transparent_50%)] animate-pulse-slow"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.05),transparent_50%)] animate-pulse-slow"></div>
 
       <div className="absolute inset-0">
         {[...Array(30)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-cyan-400/20 rounded-full animate-float"
+            className="absolute w-1 h-1 bg-secondary-400/20 rounded-full animate-float"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100 + 10}%`,
@@ -91,18 +91,18 @@ export const Hero = () => {
             style={{
               background: 'transparent',
               color: 'transparent',
-              backgroundImage: 'linear-gradient(to right, #34d4ee, #3b82f6, #9333ea)',
+              backgroundImage: 'linear-gradient(to right, #8b5cf6, #0ea5e9, #a78bfa)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: '0 0 20px rgba(34, 211, 238, 0.3), 0 0 40px rgba(59, 130, 246, 0.2), 0 0 60px rgba(147, 51, 234, 0.15)',
+              textShadow: '0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(14, 165, 233, 0.2), 0 0 60px rgba(167, 139, 250, 0.15)',
             }}
           >
             This Is Us
           </h1>
         </div>
 
-        <p className="text-xl md:text-2xl font-space-grotesk text-cyan-100/70 font-light tracking-wide mb-4 animate-fade-in-delay">
+        <p className="text-xl md:text-2xl font-space-grotesk text-secondary-100/70 font-light tracking-wide mb-4 animate-fade-in-delay">
           Where tech meets obsession.
         </p>
 
@@ -145,14 +145,14 @@ export const Hero = () => {
               <div
                 className="absolute top-full left-1/2 -translate-x-1/2 mt-6 w-48 p-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-4 pointer-events-none"
                 style={{
-                  background: 'rgba(5, 11, 22, 0.95)',
+                  background: 'rgba(12, 10, 29, 0.95)',
                   backdropFilter: 'blur(20px)',
                   border: `1px solid ${founder.color}40`,
                   boxShadow: `0 10px 40px ${founder.color}30`,
                 }}
               >
                 <p className="text-white font-semibold text-lg mb-1">{founder.name}</p>
-                <p className="text-cyan-300/70 text-sm">{founder.role}</p>
+                <p className="text-secondary-300/70 text-sm">{founder.role}</p>
                 <div className="absolute top-0 left-4 w-0.5 h-6 -translate-y-full" style={{ background: founder.color }}></div>
               </div>
             </div>
@@ -161,8 +161,8 @@ export const Hero = () => {
       </div>
 
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce-slow">
-        <div className="w-6 h-10 border-2 border-cyan-400/50 rounded-full flex justify-center p-2">
-          <div className="w-1 h-3 bg-cyan-400/70 rounded-full animate-scroll"></div>
+        <div className="w-6 h-10 border-2 border-secondary-400/50 rounded-full flex justify-center p-2">
+          <div className="w-1 h-3 bg-secondary-400/70 rounded-full animate-scroll"></div>
         </div>
       </div>
     </section>

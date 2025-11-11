@@ -9,8 +9,8 @@ const team = [
     title: 'Founder',
     tagline: 'Code is poetry in motion',
     icon: Code,
-    color: '#00FFFF',
-    gradient: 'from-cyan-400 to-blue-500',
+    color: '#8b5cf6', // secondary-500
+    gradient: 'from-secondary-400 to-primary-500',
   },
   {
     id: 2,
@@ -18,8 +18,8 @@ const team = [
     title: 'Founder',
     tagline: 'Design Means Disruption',
     icon: Lightbulb,
-    color: '#6366F1',
-    gradient: 'from-blue-500 to-purple-600',
+    color: '#0ea5e9', // primary-500
+    gradient: 'from-primary-500 to-secondary-600',
   },
   {
     id: 3,
@@ -27,8 +27,8 @@ const team = [
     title: 'Founder',
     tagline: 'Building tomorrow, today',
     icon: Sparkles,
-    color: '#B5179E',
-    gradient: 'from-purple-600 to-pink-500',
+    color: '#a78bfa', // secondary-400
+    gradient: 'from-secondary-600 to-secondary-400',
   },
 ];
 
@@ -40,10 +40,10 @@ export const Team = () => {
     <section
       id="team"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-[#050B16] overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-[#0c0a1d] overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(99,102,241,0.05),transparent_50%)]"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(181,23,158,0.05),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(139,92,246,0.05),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(167,139,250,0.05),transparent_50%)]"></div>
 
       <div className="relative z-10 max-w-7xl w-full">
         <div
@@ -51,10 +51,10 @@ export const Team = () => {
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 mb-4">
+          <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 to-primary-500 mb-4">
             The Founders
           </h2>
-          <p className="text-cyan-100/60 text-lg md:text-xl">Dreamers disguised as devs</p>
+          <p className="text-secondary-100/60 text-lg md:text-xl">Dreamers disguised as devs</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
@@ -75,7 +75,7 @@ export const Team = () => {
                 <div
                   className="relative rounded-3xl p-8 backdrop-blur-2xl border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden group-hover:scale-105"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(5, 11, 22, 0.9))',
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(12, 10, 29, 0.9))',
                     boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
                   }}
                 >
@@ -117,7 +117,7 @@ export const Team = () => {
                     >
                       {member.title}
                     </p>
-                    <p className="text-cyan-100/60 italic text-sm leading-relaxed">"{member.tagline}"</p>
+                    <p className="text-secondary-100/60 italic text-sm leading-relaxed">"{member.tagline}"</p>
                   </div>
 
                   <div
@@ -157,12 +157,12 @@ export const Team = () => {
           }`}
         >
           <div
-            className="inline-block px-8 py-4 rounded-full backdrop-blur-xl border border-cyan-400/20"
+            className="inline-block px-8 py-4 rounded-full backdrop-blur-xl border border-secondary-400/20"
             style={{
-              background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(5, 11, 22, 0.8))',
+              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(12, 10, 29, 0.8))',
             }}
           >
-            <p className="text-cyan-100/70 text-sm md:text-base">
+            <p className="text-secondary-100/70 text-sm md:text-base">
               Equal visionaries. Equal commitment. Equal impact.
             </p>
           </div>

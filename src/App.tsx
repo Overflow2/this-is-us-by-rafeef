@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CustomCursor } from './components/CustomCursor';
 import { Navbar } from './components/Navbar';
@@ -8,6 +9,8 @@ import { WhatWeBuild } from './components/WhatWeBuild';
 import { Philosophy } from './components/Philosophy';
 import { Team } from './components/Team';
 import { Contact } from './components/Contact';
+import { WhyWeExist } from './components/WhyWeExist';
+import { Founders } from './components/Founders';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,32 +39,40 @@ function App() {
       <Navbar />
       <TopRightNavbar />
 
-      {/* Pre-render Hero section during loading for instant display */}
-      <div 
-        className={`transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-        style={{
-          pointerEvents: isLoading ? 'none' : 'auto',
-          position: 'relative',
-          zIndex: isLoading ? 0 : 1,
-        }}
-      >
-        <Hero />
-      </div>
+      <Routes>
+        <Route path="/" element={
+          <>
+            {/* Pre-render Hero section during loading for instant display */}
+            <div 
+              className={`transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+              style={{
+                pointerEvents: isLoading ? 'none' : 'auto',
+                position: 'relative',
+                zIndex: isLoading ? 0 : 1,
+              }}
+            >
+              <Hero />
+            </div>
 
-      {/* Other sections */}
-      <div 
-        className={`transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-        style={{
-          pointerEvents: isLoading ? 'none' : 'auto',
-        }}
-      >
-        <WhatWeBuild />
-        <Philosophy />
-        <Team />
-        <Contact />
-      </div>
+            {/* Other sections */}
+            <div 
+              className={`transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+              style={{
+                pointerEvents: isLoading ? 'none' : 'auto',
+              }}
+            >
+              <WhatWeBuild />
+              <Philosophy />
+              <Team />
+              <Contact />
+            </div>
 
-      {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
+            {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
+          </>
+        } />
+        <Route path="/why-we-exist" element={<WhyWeExist />} />
+        <Route path="/founders" element={<Founders />} />
+      </Routes>
     </>
   );
 }

@@ -45,14 +45,14 @@ export const Contact = () => {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-gradient-to-b from-[#050B16] to-[#0a0f1a] overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-gradient-to-b from-[#0c0a1d] to-[#120f2d] overflow-hidden"
     >
       <div className="absolute inset-0">
         <div
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: `
-              radial-gradient(circle, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+              radial-gradient(circle, rgba(139, 92, 246, 0.1) 1px, transparent 1px)
             `,
             backgroundSize: '40px 40px',
           }}
@@ -65,10 +65,10 @@ export const Contact = () => {
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4">
+          <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 to-primary-500 mb-4">
             Get In Touch
           </h2>
-          <p className="text-cyan-100/60 text-lg">Let's build something extraordinary together</p>
+          <p className="text-secondary-100/60 text-lg">Let's build something extraordinary together</p>
         </div>
 
         <div
@@ -77,36 +77,36 @@ export const Contact = () => {
           }`}
         >
           <div
-            className="rounded-2xl backdrop-blur-2xl border border-cyan-400/30 overflow-hidden"
+            className="rounded-2xl backdrop-blur-2xl border border-secondary-400/30 overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.03), rgba(5, 11, 22, 0.95))',
-              boxShadow: '0 20px 60px rgba(0, 255, 255, 0.2)',
+              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.03), rgba(12, 10, 29, 0.95))',
+              boxShadow: '0 20px 60px rgba(139, 92, 246, 0.2)',
             }}
           >
-            <div className="bg-gradient-to-r from-cyan-400/20 to-blue-500/20 px-6 py-4 border-b border-cyan-400/20 flex items-center gap-2">
+            <div className="bg-gradient-to-r from-secondary-400/20 to-primary-500/20 px-6 py-4 border-b border-secondary-400/20 flex items-center gap-2">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-400/70"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-400/70"></div>
                 <div className="w-3 h-3 rounded-full bg-green-400/70"></div>
               </div>
-              <span className="ml-4 text-cyan-300/70 text-sm font-mono">terminal://thisIsUs/contact</span>
+              <span className="ml-4 text-secondary-300/70 text-sm font-mono">terminal://thisIsUs/contact</span>
             </div>
 
             <div className="p-6">
               <div
-                className="font-mono text-sm text-cyan-100/80 mb-4 h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-400/20 scrollbar-track-transparent"
+                className="font-mono text-sm text-secondary-100/80 mb-4 h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-secondary-400/20 scrollbar-track-transparent"
               >
                 {logs.length === 0 && (
-                  <div className="text-cyan-400/50">
+                  <div className="text-secondary-400/50">
                     <p>{'>'} System initialized...</p>
                     <p>{'>'} Ready for input_</p>
-                    <p className="mt-4 text-cyan-100/40">Type your message and hit enter</p>
+                    <p className="mt-4 text-secondary-100/40">Type your message and hit enter</p>
                   </div>
                 )}
                 {logs.map((log, index) => (
                   <p
                     key={index}
-                    className={`${log.includes('successful') ? 'text-green-400' : 'text-cyan-300/70'} leading-relaxed`}
+                    className={`${log.includes('successful') ? 'text-green-400' : 'text-secondary-300/70'} leading-relaxed`}
                   >
                     {log}
                   </p>
@@ -115,23 +115,23 @@ export const Contact = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="relative">
-                <div className="flex items-center gap-2 text-cyan-400/70 font-mono text-sm">
+                <div className="flex items-center gap-2 text-secondary-400/70 font-mono text-sm">
                   <span>{'>'}</span>
                   <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     disabled={isProcessing}
-                    className="flex-1 bg-transparent outline-none text-cyan-100 placeholder-cyan-400/30"
+                    className="flex-1 bg-transparent outline-none text-secondary-100 placeholder-secondary-400/30"
                     placeholder="type your message and hit enter_"
                     autoComplete="off"
                   />
                   <button
                     type="submit"
                     disabled={isProcessing || !input.trim()}
-                    className="p-2 rounded-lg bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400/30 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed group"
+                    className="p-2 rounded-lg bg-secondary-400/10 hover:bg-secondary-400/20 border border-secondary-400/30 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed group"
                   >
-                    <Send className="w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    <Send className="w-4 h-4 text-secondary-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </button>
                 </div>
               </form>
@@ -145,9 +145,9 @@ export const Contact = () => {
           }`}
         >
           {[
-            { icon: Github, color: '#00FFFF', href: '#' },
-            { icon: Twitter, color: '#6366F1', href: '#' },
-            { icon: Linkedin, color: '#B5179E', href: '#' },
+            { icon: Github, color: '#8b5cf6', href: '#' }, // secondary-500
+            { icon: Twitter, color: '#0ea5e9', href: '#' }, // primary-500
+            { icon: Linkedin, color: '#a78bfa', href: '#' }, // secondary-400
           ].map((social, index) => {
             const Icon = social.icon;
             return (
@@ -156,10 +156,10 @@ export const Contact = () => {
                 href={social.href}
                 className="group relative w-14 h-14 rounded-full backdrop-blur-xl border border-white/10 hover:border-white/30 flex items-center justify-center transition-all duration-300 hover:scale-110"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(5, 11, 22, 0.8))',
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(12, 10, 29, 0.8))',
                 }}
               >
-                <Icon className="w-6 h-6 text-cyan-100/60 group-hover:text-cyan-100 transition-colors" />
+                <Icon className="w-6 h-6 text-secondary-100/60 group-hover:text-secondary-100 transition-colors" />
                 <div
                   className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{
@@ -176,10 +176,10 @@ export const Contact = () => {
           <div
             className="inline-block px-8 py-4 rounded-full backdrop-blur-xl border border-white/5"
             style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(5, 11, 22, 0.8))',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(12, 10, 29, 0.8))',
             }}
           >
-            <p className="text-cyan-100/40 text-sm">
+            <p className="text-secondary-100/40 text-sm">
               © 2025 ThisIsUs. Built with obsession.
             </p>
           </div>

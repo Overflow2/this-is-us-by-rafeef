@@ -9,21 +9,21 @@ const projects = [
     title: 'Notionary',
     description: 'A place for thinkers & Revolution of note-taking',
     icon: Cpu,
-    color: '#00FFFF',
+    color: '#8b5cf6', // secondary-500
   },
   {
     id: 2,
     title: 'OnlyPets',
     description: 'Find Your Fur-ever Friend',
     icon: Zap,
-    color: '#6366F1',
+    color: '#0ea5e9', // primary-500
   },
   {
     id: 3,
     title: 'Catalyst-js',
     description: 'A curated collection of beautiful React components. Built with Tailwind CSS and Framer Motion. Completely open-source.',
     icon: Rocket,
-    color: '#B5179E',
+    color: '#a78bfa', // secondary-400
   },
 ];
 
@@ -36,13 +36,13 @@ export const WhatWeBuild = () => {
     <section
       id="what-we-build"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-[#050B16] overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-[#0c0a1d] overflow-hidden"
     >
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
           backgroundImage: `
-            linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)
+            linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px)
           `,
           backgroundSize: '50px 50px',
           animation: 'grid-flow 20s linear infinite',
@@ -51,10 +51,10 @@ export const WhatWeBuild = () => {
 
       <div className="relative z-10 max-w-7xl w-full">
         <div className={`text-center mb-20 transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4">
+          <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 to-primary-500 mb-4">
             What We Build
           </h2>
-          <p className="text-cyan-100/60 text-lg md:text-xl">Innovation at the intersection of art and code</p>
+          <p className="text-secondary-100/60 text-lg md:text-xl">Innovation at the intersection of art and code</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
@@ -79,8 +79,8 @@ export const WhatWeBuild = () => {
                   className="relative h-80 rounded-2xl p-8 backdrop-blur-xl border transition-all duration-500"
                   style={{
                     background: isHovered
-                      ? `linear-gradient(135deg, ${project.color}15, rgba(5, 11, 22, 0.8))`
-                      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(5, 11, 22, 0.8))',
+                      ? `linear-gradient(135deg, ${project.color}15, rgba(12, 10, 29, 0.8))`
+                      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(12, 10, 29, 0.8))',
                     borderColor: isHovered ? `${project.color}60` : 'rgba(255, 255, 255, 0.1)',
                     boxShadow: isHovered
                       ? `0 20px 60px ${project.color}40, inset 0 0 40px ${project.color}10`
@@ -111,7 +111,7 @@ export const WhatWeBuild = () => {
                       {project.title}
                     </h3>
 
-                    <p className="text-cyan-100/60 leading-relaxed flex-grow">
+                    <p className="text-secondary-100/60 leading-relaxed flex-grow">
                       {project.description}
                     </p>
 
