@@ -22,10 +22,11 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
 
       return () => clearTimeout(timeout);
     } else {
+      // Remove the additional delays to ensure immediate transition
       const completeTimeout = setTimeout(() => {
         setIsComplete(true);
-        setTimeout(onComplete, 800);
-      }, 500);
+        onComplete(); // Call onComplete immediately without additional delay
+      }, 300); // Reduced delay for smoother transition
 
       return () => clearTimeout(completeTimeout);
     }
@@ -33,7 +34,7 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-[#0c0a1d] transition-opacity duration-800 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-[#050B16] transition-opacity duration-300 ${
         isComplete ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -42,8 +43,8 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
           className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px)
+              linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)
             `,
             backgroundSize: '50px 50px',
           }}
@@ -66,11 +67,11 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
                 <div
                   className="w-4 h-12 backdrop-blur-md border-2 rounded"
                   style={{
-                    borderColor: i === 0 ? '#8b5cf6' : i === 1 ? '#0ea5e9' : '#a78bfa',
+                    borderColor: i === 0 ? '#00FFFF' : i === 1 ? '#6366F1' : '#B5179E',
                     background: `linear-gradient(135deg, ${
-                      i === 0 ? '#8b5cf6' : i === 1 ? '#0ea5e9' : '#a78bfa'
+                      i === 0 ? '#00FFFF' : i === 1 ? '#6366F1' : '#B5179E'
                     }20, transparent)`,
-                    boxShadow: `0 0 20px ${i === 0 ? '#8b5cf6' : i === 1 ? '#0ea5e9' : '#a78bfa'}40`,
+                    boxShadow: `0 0 20px ${i === 0 ? '#00FFFF' : i === 1 ? '#6366F1' : '#B5179E'}40`,
                   }}
                 ></div>
               </div>
@@ -78,7 +79,7 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
           </div>
         </div>
 
-        <div className="font-mono text-secondary-300/80 space-y-2">
+        <div className="font-mono text-cyan-300/80 space-y-2">
           {displayedLines.map((line, index) => (
             <div
               key={index}
@@ -89,10 +90,10 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
               }}
             >
               <p className="text-sm md:text-base flex items-center gap-2">
-                <span className="text-secondary-400">{'>'}</span>
+                <span className="text-cyan-400">{'>'}</span>
                 {line}
                 {index === displayedLines.length - 1 && currentLine < lines.length && (
-                  <span className="inline-block w-2 h-4 bg-secondary-400 ml-1 animate-blink"></span>
+                  <span className="inline-block w-2 h-4 bg-cyan-400 ml-1 animate-blink"></span>
                 )}
               </p>
             </div>
@@ -102,13 +103,13 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
         {currentLine >= lines.length && (
           <div className="mt-8 flex justify-center">
             <div
-              className="w-64 h-1 bg-gradient-to-r from-secondary-400 via-primary-500 to-secondary-600 rounded-full opacity-0 animate-fade-in"
+              className="w-64 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full opacity-0 animate-fade-in"
               style={{
                 animationDelay: '0.5s',
                 animationFillMode: 'forwards',
               }}
             >
-              <div className="w-full h-full bg-gradient-to-r from-secondary-400 to-transparent rounded-full animate-loading-bar"></div>
+              <div className="w-full h-full bg-gradient-to-r from-cyan-400 to-transparent rounded-full animate-loading-bar"></div>
             </div>
           </div>
         )}

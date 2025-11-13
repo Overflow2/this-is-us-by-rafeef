@@ -70,9 +70,9 @@ export const CustomCursor = () => {
         }}
       >
         <div
-          className="w-4 h-4 rounded-full border-2 border-secondary-400"
+          className="w-4 h-4 rounded-full border-2 border-cyan-400"
           style={{
-            boxShadow: '0 0 10px rgba(139, 92, 246, 0.5)',
+            boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)',
           }}
         ></div>
       </div>
@@ -88,9 +88,9 @@ export const CustomCursor = () => {
         }}
       >
         <div
-          className="w-12 h-12 rounded-full border border-secondary-400/50"
+          className="w-12 h-12 rounded-full border border-cyan-400/50"
           style={{
-            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent)',
+            background: 'radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent)',
           }}
         ></div>
       </div>
@@ -104,7 +104,7 @@ export const CustomCursor = () => {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          <div className="w-8 h-8 rounded-full bg-secondary-400/30"></div>
+          <div className="w-8 h-8 rounded-full bg-cyan-400/30"></div>
         </div>
       )}
     </>

@@ -27,10 +27,8 @@ function App() {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    // Ensure page stays at top after loading completes
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
+    // Remove the additional delay to ensure immediate display
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -44,7 +42,7 @@ function App() {
           <>
             {/* Pre-render Hero section during loading for instant display */}
             <div 
-              className={`transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+              className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
               style={{
                 pointerEvents: isLoading ? 'none' : 'auto',
                 position: 'relative',
@@ -56,7 +54,7 @@ function App() {
 
             {/* Other sections */}
             <div 
-              className={`transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+              className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
               style={{
                 pointerEvents: isLoading ? 'none' : 'auto',
               }}

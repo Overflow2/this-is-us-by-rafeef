@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 const foundersData = [
   {
     id: 1,
-    name: 'Rafeef Ammar',
-    role: 'Visionary',
-    color: '#8b5cf6', // secondary-500
+    name: 'Marjan Ahsan',
+    role: 'Catalyst',
+    color: '#00FFFF',
     bio: 'A creative force with an obsession for innovation. Rafeef drives the conceptual direction of our projects, ensuring that each solution pushes the boundaries of what\'s possible.',
     skills: ['Strategic Thinking', 'Creative Vision', 'Future Planning']
   },
@@ -13,15 +13,15 @@ const foundersData = [
     id: 2,
     name: 'Erfan Noor Mahin',
     role: 'Architect',
-    color: '#0ea5e9', // primary-500
+    color: '#6366F1',
     bio: 'The technical mastermind who transforms ideas into reality. Erfan\'s expertise in system design ensures our solutions are not only innovative but also robust and scalable.',
     skills: ['System Design', 'Technical Architecture', 'Problem Solving']
   },
   {
     id: 3,
-    name: 'Marjan Ahsan',
-    role: 'Catalyst',
-    color: '#a78bfa', // secondary-400
+    name: 'Rafeef Ammar',
+    role: 'Visionary',
+    color: '#B5179E',
     bio: 'The driving force that brings ideas to life. Marjan\'s passion for execution ensures that our visions are transformed into tangible, impactful solutions.',
     skills: ['Project Execution', 'Team Leadership', 'Process Optimization']
   }
@@ -34,9 +34,9 @@ export const Founders = () => {
   }, []);
 
   return (
-    <section className="min-h-screen py-20 px-6 flex items-center justify-center bg-gradient-to-br from-[#0c0a1d] via-[#120f2d] to-[#0c0a1d]">
+    <section className="min-h-screen py-20 px-6 flex items-center justify-center bg-gradient-to-br from-[#050B16] via-[#0a1428] to-[#050B16]">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-orbitron font-bold mb-16 text-center bg-gradient-to-r from-secondary-400 via-primary-500 to-secondary-600 bg-clip-text text-transparent">
+        <h1 className="text-5xl md:text-7xl font-orbitron font-bold mb-16 text-center bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
           Our Founders
         </h1>
         
@@ -89,7 +89,7 @@ export const Founders = () => {
                   </p>
                 </div>
                 
-                <p className="text-secondary-100/80 font-space-grotesk text-lg mb-6 text-center leading-relaxed">
+                <p className="text-cyan-100/80 font-space-grotesk text-lg mb-6 text-center leading-relaxed">
                   {founder.bio}
                 </p>
                 
@@ -117,11 +117,11 @@ export const Founders = () => {
         </div>
         
         <div className="mt-20 text-center">
-          <div className="inline-block p-8 rounded-xl bg-gradient-to-r from-secondary-500/10 to-primary-500/10 border border-secondary-400/30 max-w-3xl">
-            <blockquote className="text-2xl font-orbitron italic text-secondary-100 mb-4">
+          <div className="inline-block p-8 rounded-xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 max-w-3xl">
+            <blockquote className="text-2xl font-orbitron italic text-cyan-100 mb-4">
               "Together, we are more than the sum of our parts."
             </blockquote>
-            <p className="text-secondary-100/70 font-space-grotesk text-lg">
+            <p className="text-cyan-100/70 font-space-grotesk text-lg">
               United by a shared obsession for excellence and innovation, we push the boundaries of what's possible.
             </p>
           </div>

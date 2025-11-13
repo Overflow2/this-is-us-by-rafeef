@@ -9,7 +9,7 @@ export const Philosophy = () => {
     <section
       id="philosophy"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-gradient-to-b from-[#0c0a1d] via-[#120f2d] to-[#0c0a1d] overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center py-32 px-6 bg-gradient-to-b from-[#050B16] via-[#0a1231] to-[#050B16] overflow-hidden"
     >
       <div className="absolute inset-0">
         {[...Array(5)].map((_, i) => (
@@ -19,7 +19,7 @@ export const Philosophy = () => {
             style={{
               width: `${300 + i * 150}px`,
               height: `${300 + i * 150}px`,
-              border: '1px solid rgba(139, 92, 246, 0.05)',
+              border: '1px solid rgba(0, 255, 255, 0.05)',
               borderRadius: '30%',
               animation: `spin-slow ${20 + i * 5}s linear infinite`,
               animationDirection: i % 2 === 0 ? 'normal' : 'reverse',
@@ -40,12 +40,12 @@ export const Philosophy = () => {
               }}
             >
               <div
-                className="w-32 h-32 backdrop-blur-sm border border-secondary-400/20"
+                className="w-32 h-32 backdrop-blur-sm border border-cyan-400/20"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(14, 165, 233, 0.05))',
+                  background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(99, 102, 241, 0.05))',
                   transform: `rotate(${i * 60}deg)`,
                   clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-                  boxShadow: '0 0 40px rgba(139, 92, 246, 0.2)',
+                  boxShadow: '0 0 40px rgba(0, 255, 255, 0.2)',
                 }}
               ></div>
             </div>
@@ -58,10 +58,10 @@ export const Philosophy = () => {
             }}
           >
             <div
-              className="w-full h-full backdrop-blur-md border-2 border-secondary-500/30 rounded-3xl"
+              className="w-full h-full backdrop-blur-md border-2 border-purple-500/30 rounded-3xl"
               style={{
-                background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.1), transparent)',
-                boxShadow: '0 0 60px rgba(167, 139, 250, 0.3)',
+                background: 'linear-gradient(135deg, rgba(181, 23, 158, 0.1), transparent)',
+                boxShadow: '0 0 60px rgba(181, 23, 158, 0.3)',
                 transform: 'rotate(45deg)',
               }}
             ></div>
@@ -75,23 +75,23 @@ export const Philosophy = () => {
             isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}
         >
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 via-primary-500 to-secondary-600 leading-tight mb-8">
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 leading-tight mb-8">
             Innovation is not a department —
           </h2>
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-secondary-600 via-secondary-500 to-secondary-400 leading-tight">
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 leading-tight">
             it's our DNA.
           </h2>
 
           <div className="mt-16 space-y-4">
             <div
-              className={`inline-block px-6 py-3 rounded-full backdrop-blur-xl border border-secondary-400/30 transition-all duration-700 delay-300 ${
+              className={`inline-block px-6 py-3 rounded-full backdrop-blur-xl border border-cyan-400/30 transition-all duration-700 delay-300 ${
                 isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{
-                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(14, 165, 233, 0.05))',
+                background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(99, 102, 241, 0.05))',
               }}
             >
-              <p className="text-secondary-100/80 text-lg md:text-xl font-light">
+              <p className="text-cyan-100/80 text-lg md:text-xl font-light">
                 We don't follow trends. We create them.
               </p>
             </div>
@@ -99,7 +99,7 @@ export const Philosophy = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary-400/50 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"></div>
     </section>
   );
 };
