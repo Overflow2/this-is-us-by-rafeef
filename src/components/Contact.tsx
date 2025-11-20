@@ -1,10 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 import { Send, Github, Twitter, Linkedin } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 export const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, 0.3);
+  const [step, setStep] = useState<'name' | 'email' | 'message'>('name');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [input, setInput] = useState('');
   const [logs, setLogs] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -14,7 +19,73 @@ export const Contact = () => {
     logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Initialize EmailJS
+  useEffect(() => {
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '';
+    if (publicKey) {
+      emailjs.init(publicKey);
+    }
+  }, []);
+
+  const handleNameSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || isProcessing) return;
+
+    const userName = name.trim();
+    setIsProcessing(true);
+
+    const processingLogs = [
+      `> Name received: "${userName}"`,
+      '> Storing contact information...',
+      '> Proceeding to email collection...',
+      '',
+    ];
+
+    for (let i = 0; i < processingLogs.length; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      setLogs((prev) => [...prev, processingLogs[i]]);
+    }
+
+    // Store name and move to email step
+    setName(userName);
+    setStep('email');
+    setIsProcessing(false);
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || isProcessing) return;
+
+    const userEmail = email.trim();
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userEmail)) {
+      setLogs((prev) => [...prev, '> Invalid email format. Please try again.', '']);
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const processingLogs = [
+      `> Email received: "${userEmail}"`,
+      '> Validating email format...',
+      '> Email verified.',
+      '> Ready for message input...',
+      '',
+    ];
+
+    for (let i = 0; i < processingLogs.length; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      setLogs((prev) => [...prev, processingLogs[i]]);
+    }
+
+    // Store email and move to message step
+    setEmail(userEmail);
+    setStep('message');
+    setIsProcessing(false);
+  };
+
+  const handleMessageSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isProcessing) return;
 
@@ -27,15 +98,60 @@ export const Contact = () => {
       '> Establishing secure connection...',
       '> Encrypting message...',
       `> Message received: "${message}"`,
-      '> Routing to founders...',
-      '> Transmission successful!',
-      '> We\'ll get back to you soon.',
-      '',
+      '> Sending email...',
     ];
 
     for (let i = 0; i < processingLogs.length; i++) {
       await new Promise((resolve) => setTimeout(resolve, 300));
       setLogs((prev) => [...prev, processingLogs[i]]);
+    }
+
+    try {
+      // Send email using EmailJS
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || '';
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '';
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '';
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS configuration missing. Please set up environment variables.');
+      }
+
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: name,
+          from_email: email,
+          message: message,
+          to_email: 'thisisus533@gmail.com',
+        },
+        publicKey
+      );
+
+      const successLogs = [
+        '> Email sent successfully!',
+        '> Routing to founders...',
+        '> Transmission successful!',
+        '> We\'ll get back to you soon.',
+        '',
+      ];
+
+      for (let i = 0; i < successLogs.length; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        setLogs((prev) => [...prev, successLogs[i]]);
+      }
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      const errorLogs = [
+        '> Error: Failed to send email.',
+        '> Please try again later or contact us directly.',
+        '',
+      ];
+
+      for (let i = 0; i < errorLogs.length; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        setLogs((prev) => [...prev, errorLogs[i]]);
+      }
     }
 
     setIsProcessing(false);
@@ -60,21 +176,23 @@ export const Contact = () => {
       </div>
 
       <div className="relative z-10 max-w-4xl w-full">
-        <div
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+          transition={{ duration: 0.6 }}
         >
           <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4">
             Get In Touch
           </h2>
           <p className="text-cyan-100/60 text-lg">Let's build something extraordinary together</p>
-        </div>
+        </motion.div>
 
-        <div
-          className={`transition-all duration-1000 delay-300 ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+        <motion.div
+          className="transition-all duration-1000 delay-300"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div
             className="rounded-2xl backdrop-blur-2xl border border-cyan-400/30 overflow-hidden"
@@ -100,13 +218,23 @@ export const Contact = () => {
                   <div className="text-cyan-400/50">
                     <p>{'>'} System initialized...</p>
                     <p>{'>'} Ready for input_</p>
-                    <p className="mt-4 text-cyan-100/40">Type your message and hit enter</p>
+                    <p className="mt-4 text-cyan-100/40">
+                      {step === 'name' && 'Enter your name and hit enter'}
+                      {step === 'email' && 'Enter your email and hit enter'}
+                      {step === 'message' && 'Type your message and hit enter'}
+                    </p>
                   </div>
                 )}
                 {logs.map((log, index) => (
                   <p
                     key={index}
-                    className={`${log.includes('successful') ? 'text-green-400' : 'text-cyan-300/70'} leading-relaxed`}
+                    className={`${
+                      log.includes('successful') || log.includes('sent successfully')
+                        ? 'text-green-400'
+                        : log.includes('Error') || log.includes('Failed')
+                        ? 'text-red-400'
+                        : 'text-cyan-300/70'
+                    } leading-relaxed`}
                   >
                     {log}
                   </p>
@@ -114,35 +242,86 @@ export const Contact = () => {
                 <div ref={logsEndRef} />
               </div>
 
-              <form onSubmit={handleSubmit} className="relative">
-                <div className="flex items-center gap-2 text-cyan-400/70 font-mono text-sm">
-                  <span>{'>'}</span>
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    disabled={isProcessing}
-                    className="flex-1 bg-transparent outline-none text-cyan-100 placeholder-cyan-400/30"
-                    placeholder="type your message and hit enter_"
-                    autoComplete="off"
-                  />
-                  <button
-                    type="submit"
-                    disabled={isProcessing || !input.trim()}
-                    className="p-2 rounded-lg bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400/30 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed group"
-                  >
-                    <Send className="w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </button>
-                </div>
-              </form>
+              {step === 'name' && (
+                <form onSubmit={handleNameSubmit} className="relative">
+                  <div className="flex items-center gap-2 text-cyan-400/70 font-mono text-sm">
+                    <span>{'>'}</span>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={isProcessing}
+                      className="flex-1 bg-transparent outline-none text-cyan-100 placeholder-cyan-400/30"
+                      placeholder="enter your name and hit enter_"
+                      autoComplete="name"
+                    />
+                    <button
+                      type="submit"
+                      disabled={isProcessing || !name.trim()}
+                      className="p-2 rounded-lg bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400/30 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed group"
+                    >
+                      <Send className="w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {step === 'email' && (
+                <form onSubmit={handleEmailSubmit} className="relative">
+                  <div className="flex items-center gap-2 text-cyan-400/70 font-mono text-sm">
+                    <span>{'>'}</span>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={isProcessing}
+                      className="flex-1 bg-transparent outline-none text-cyan-100 placeholder-cyan-400/30"
+                      placeholder="enter your email and hit enter_"
+                      autoComplete="email"
+                    />
+                    <button
+                      type="submit"
+                      disabled={isProcessing || !email.trim()}
+                      className="p-2 rounded-lg bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400/30 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed group"
+                    >
+                      <Send className="w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {step === 'message' && (
+                <form onSubmit={handleMessageSubmit} className="relative">
+                  <div className="flex items-center gap-2 text-cyan-400/70 font-mono text-sm">
+                    <span>{'>'}</span>
+                    <input
+                      type="text"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      disabled={isProcessing}
+                      className="flex-1 bg-transparent outline-none text-cyan-100 placeholder-cyan-400/30"
+                      placeholder="type your message and hit enter_"
+                      autoComplete="off"
+                    />
+                    <button
+                      type="submit"
+                      disabled={isProcessing || !input.trim()}
+                      className="p-2 rounded-lg bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400/30 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed group"
+                    >
+                      <Send className="w-4 h-4 text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div
-          className={`mt-16 flex justify-center gap-6 transition-all duration-1000 delay-500 ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+        <motion.div
+          className="mt-16 flex justify-center gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
         >
           {[
             { icon: Github, color: '#00FFFF', href: '#' },
@@ -170,7 +349,7 @@ export const Contact = () => {
               </a>
             );
           })}
-        </div>
+        </motion.div>
 
         <footer className="mt-20 text-center">
           <div

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 
 export const Philosophy = () => {
@@ -69,12 +70,12 @@ export const Philosophy = () => {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-5xl text-center">
-        <div
-          className={`transition-all duration-1000 ${
-            isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-          }`}
-        >
+      <motion.div
+        className="relative z-10 max-w-5xl text-center"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 30 }}
+        transition={{ duration: 0.7 }}
+      >
           <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 leading-tight mb-8">
             Innovation is not a department —
           </h2>
@@ -96,8 +97,7 @@ export const Philosophy = () => {
               </p>
             </div>
           </div>
-        </div>
-      </div>
+      </motion.div>
 
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"></div>
     </section>

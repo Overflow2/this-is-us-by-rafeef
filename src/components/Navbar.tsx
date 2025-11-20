@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
 
 const navItems = [
   { id: 'hero', label: 'Home' },
@@ -10,6 +11,7 @@ const navItems = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const isTouchDevice = useIsTouchDevice();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -19,16 +21,33 @@ export const Navbar = () => {
     }
   };
 
+  const handleMouseEnter = () => {
+    if (!isTouchDevice) setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!isTouchDevice) setIsOpen(false);
+  };
+
+  const handleToggle = () => {
+    if (isTouchDevice) {
+      setIsOpen((prev) => !prev);
+    }
+  };
+
   return (
-    <nav className="fixed top-6 left-6 z-50">
-      <div 
+    <nav className="fixed top-4 left-4 sm:top-6 sm:left-6 z-50">
+      <div
         className="relative"
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         {/* Hamburger Button */}
         <button
-          className="relative w-12 h-12 flex flex-col items-center justify-center gap-1.5 rounded-full backdrop-blur-xl border border-cyan-400/30 bg-[rgba(5,11,22,0.8)] transition-all duration-300 hover:border-cyan-400/60 hover:bg-[rgba(5,11,22,0.95)] group z-10"
+          onClick={handleToggle}
+          aria-label="Main navigation"
+          aria-expanded={isOpen}
+          className="relative w-10 h-10 sm:w-12 sm:h-12 flex flex-col items-center justify-center gap-1.5 rounded-full backdrop-blur-xl border border-cyan-400/30 bg-[rgba(5,11,22,0.85)] transition-all duration-300 hover:border-cyan-400/60 hover:bg-[rgba(5,11,22,0.95)] group z-10"
           style={{
             boxShadow: '0 0 20px rgba(34, 211, 238, 0.2), inset 0 0 20px rgba(34, 211, 238, 0.05)',
           }}
@@ -60,14 +79,14 @@ export const Navbar = () => {
         </button>
 
         {/* Invisible bridge to prevent gap issues */}
-        <div 
+        <div
           className="absolute top-12 left-0 w-full h-2"
-          style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
+          style={{ pointerEvents: !isTouchDevice && isOpen ? 'auto' : 'none' }}
         />
 
         {/* Navigation Menu */}
         <div
-          className={`absolute top-14 left-0 min-w-[200px] backdrop-blur-xl border border-cyan-400/30 bg-[rgba(5,11,22,0.95)] rounded-lg overflow-hidden transition-all duration-300 ${
+          className={`absolute top-14 left-0 w-[75vw] max-w-xs sm:w-64 backdrop-blur-xl border border-cyan-400/30 bg-[rgba(5,11,22,0.95)] rounded-lg overflow-hidden transition-all duration-300 ${
             isOpen
               ? 'opacity-100 translate-y-0 pointer-events-auto'
               : 'opacity-0 -translate-y-4 pointer-events-none'
@@ -81,7 +100,7 @@ export const Navbar = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="w-full px-6 py-3 text-left text-cyan-100/80 hover:text-cyan-400 hover:bg-cyan-400/10 transition-all duration-200 font-space-grotesk text-sm tracking-wide relative group"
+                className="w-full px-5 py-3 text-left text-cyan-100/80 hover:text-cyan-400 hover:bg-cyan-400/10 transition-all duration-200 font-space-grotesk text-sm sm:text-base tracking-wide relative group"
                 style={{
                   transitionDelay: `${index * 0.05}s`,
                 }}

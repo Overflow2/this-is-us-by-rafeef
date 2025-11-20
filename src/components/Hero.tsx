@@ -1,5 +1,7 @@
 import { useRef, useMemo, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useMousePosition } from '../hooks/useMousePosition';
+import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
 import { Users } from 'lucide-react';
 import { Logo } from './Logo';
 
@@ -13,6 +15,7 @@ export const Hero = () => {
   const mousePosition = useMousePosition();
   const heroRef = useRef<HTMLDivElement>(null);
   const centerRef = useRef({ x: 0, y: 0 });
+  const isTouchDevice = useIsTouchDevice();
 
   // Update center position on mount and resize
   useEffect(() => {
@@ -39,6 +42,11 @@ export const Hero = () => {
   
   // Optimized parallax calculation
   const getParallaxStyle = (depth: number) => {
+    if (isTouchDevice) {
+      return {
+        transform: 'translate3d(0, 0, 0)',
+      };
+    }
     const centerX = centerRef.current.x;
     const centerY = centerRef.current.y;
     const moveX = (mousePosition.x - centerX) * depth;
@@ -51,11 +59,14 @@ export const Hero = () => {
   };
 
   // Memoize parallax styles to prevent unnecessary recalculations
-  const textParallaxStyle = useMemo(() => getParallaxStyle(0.02), [mousePosition.x, mousePosition.y]);
+  const textParallaxStyle = useMemo(
+    () => getParallaxStyle(0.02),
+    [mousePosition.x, mousePosition.y, isTouchDevice]
+  );
   
-  const founderParallaxStyles = useMemo(() => 
-    founders.map((_, index) => getParallaxStyle(0.03 + index * 0.01)),
-    [mousePosition.x, mousePosition.y]
+  const founderParallaxStyles = useMemo(
+    () => founders.map((_, index) => getParallaxStyle(0.03 + index * 0.01)),
+    [mousePosition.x, mousePosition.y, isTouchDevice]
   );
 
   return (
@@ -81,81 +92,105 @@ export const Hero = () => {
         ))}
       </div>
 
-      <div className="relative z-10 text-center px-6 flex flex-col items-center justify-center" style={{ ...textParallaxStyle, paddingTop: '15px' }}>
-        <Logo />
-        <div className="mb-8 bg-transparent mt-4">
-          <h1 
-            className="text-8xl md:text-9xl font-orbitron font-semibold tracking-tighter animate-fade-in"
-            style={{
-              background: 'transparent',
-              color: 'transparent',
-              backgroundImage: 'linear-gradient(to right, #34d4ee, #3b82f6, #9333ea)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 0 20px rgba(34, 211, 238, 0.3), 0 0 40px rgba(59, 130, 246, 0.2), 0 0 60px rgba(147, 51, 234, 0.15)',
-            }}
-          >
-            This Is Us
-          </h1>
-        </div>
-
-        <p className="text-xl md:text-2xl font-space-grotesk text-cyan-100/70 font-light tracking-wide mb-4 animate-fade-in-delay">
-          Where tech meets obsession.
-        </p>
-
-        <div className="flex justify-center items-center gap-12 md:gap-20 mt-10">
-          {founders.map((founder, index) => (
-            <div
-              key={founder.id}
-              className="group relative cursor-pointer"
+      {/* Two-column layout */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between" style={{ ...textParallaxStyle, paddingTop: '15px' }}>
+        {/* Left column - Title, subtitle, and founder bubbles */}
+        <motion.div
+          className="md:w-1/2 flex flex-col items-start justify-center text-left md:pr-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <div className="mb-8 bg-transparent mt-4">
+            <h1 
+              className="text-6xl md:text-7xl lg:text-8xl font-orbitron font-semibold tracking-tighter animate-fade-in"
               style={{
-                ...founderParallaxStyles[index],
-                animationDelay: `${index * 0.2}s`,
+                background: 'transparent',
+                color: 'transparent',
+                backgroundImage: 'linear-gradient(to right, #34d4ee, #3b82f6, #9333ea)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                textShadow: '0 0 20px rgba(34, 211, 238, 0.3), 0 0 40px rgba(59, 130, 246, 0.2), 0 0 60px rgba(147, 51, 234, 0.15)',
               }}
             >
-              <div
-                className="w-24 h-24 md:w-32 md:h-32 rounded-full relative transition-all duration-500 group-hover:scale-110"
+              This Is Us
+            </h1>
+          </div>
+
+          <p className="text-xl md:text-2xl font-space-grotesk text-cyan-100/70 font-light tracking-wide mb-12 animate-fade-in-delay">
+            Where tech meets obsession.
+          </p>
+
+          {/* Founder bubbles on the left */}
+          <div className="flex justify-start items-center gap-8 mt-10 flex-wrap">
+            {founders.map((founder, index) => (
+              <motion.div
+                key={founder.id}
+                className="group relative cursor-pointer"
                 style={{
-                  background: `radial-gradient(circle, ${founder.color}40, ${founder.color}10)`,
-                  boxShadow: `0 0 60px ${founder.color}60, inset 0 0 20px ${founder.color}40`,
+                  ...founderParallaxStyles[index],
+                  animationDelay: `${index * 0.2}s`,
                 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
               >
                 <div
-                  className="absolute inset-2 rounded-full backdrop-blur-xl border border-white/10 flex items-center justify-center"
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-full relative transition-all duration-500 group-hover:scale-110"
                   style={{
-                    background: `linear-gradient(135deg, ${founder.color}20, transparent)`,
+                    background: `radial-gradient(circle, ${founder.color}40, ${founder.color}10)`,
+                    boxShadow: `0 0 60px ${founder.color}60, inset 0 0 20px ${founder.color}40`,
                   }}
                 >
-                  <Users className="w-10 h-10 md:w-12 md:h-12" style={{ color: founder.color }} />
-                </div>
-
-                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-spin-slow">
                   <div
-                    className="absolute inset-0 rounded-full"
+                    className="absolute inset-2 rounded-full backdrop-blur-xl border border-white/10 flex items-center justify-center"
                     style={{
-                      background: `conic-gradient(from 0deg, transparent, ${founder.color}80, transparent)`,
+                      background: `linear-gradient(135deg, ${founder.color}20, transparent)`,
                     }}
-                  ></div>
-                </div>
-              </div>
+                  >
+                    <Users className="w-8 h-8 md:w-10 md:h-10" style={{ color: founder.color }} />
+                  </div>
 
-              <div
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-6 w-48 p-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-4 pointer-events-none"
-                style={{
-                  background: 'rgba(5, 11, 22, 0.95)',
-                  backdropFilter: 'blur(20px)',
-                  border: `1px solid ${founder.color}40`,
-                  boxShadow: `0 10px 40px ${founder.color}30`,
-                }}
-              >
-                <p className="text-white font-semibold text-lg mb-1">{founder.name}</p>
-                <p className="text-cyan-300/70 text-sm">{founder.role}</p>
-                <div className="absolute top-0 left-4 w-0.5 h-6 -translate-y-full" style={{ background: founder.color }}></div>
-              </div>
-            </div>
-          ))}
-        </div>
+                  <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-spin-slow">
+                    <div
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: `conic-gradient(from 0deg, transparent, ${founder.color}80, transparent)`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-40 p-3 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-y-0 translate-y-2 pointer-events-none"
+                  style={{
+                    background: 'rgba(5, 11, 22, 0.95)',
+                    backdropFilter: 'blur(20px)',
+                    border: `1px solid ${founder.color}40`,
+                    boxShadow: `0 10px 40px ${founder.color}30`,
+                  }}
+                >
+                  <p className="text-white font-semibold text-sm mb-1">{founder.name}</p>
+                  <p className="text-cyan-300/70 text-xs">{founder.role}</p>
+                  <div className="absolute top-0 left-4 w-0.5 h-4 -translate-y-full" style={{ background: founder.color }}></div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Right column - Logo */}
+        <motion.div
+          className="md:w-1/2 flex justify-center md:justify-end mt-12 md:mt-0"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <div className="w-80 h-80 md:w-96 md:h-96 flex items-center justify-center">
+            <Logo />
+          </div>
+        </motion.div>
       </div>
 
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce-slow">

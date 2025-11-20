@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 import { Zap, Rocket, Cpu } from 'lucide-react';
 
@@ -50,12 +51,17 @@ export const WhatWeBuild = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl w-full">
-        <div className={`text-center mb-20 transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <motion.div
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4">
             What We Build
           </h2>
           <p className="text-cyan-100/60 text-lg md:text-xl">Innovation at the intersection of art and code</p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {projects.map((project, index) => {
@@ -63,7 +69,7 @@ export const WhatWeBuild = () => {
             const isHovered = hoveredId === project.id;
 
             return (
-              <div
+                <motion.div
                 key={project.id}
                 className={`relative group cursor-pointer transition-all duration-700 ${
                   isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
@@ -74,6 +80,7 @@ export const WhatWeBuild = () => {
                 }}
                 onMouseEnter={() => setHoveredId(project.id)}
                 onMouseLeave={() => setHoveredId(null)}
+                  whileHover={{ y: -8 }}
               >
                 <div
                   className="relative h-80 rounded-2xl p-8 backdrop-blur-xl border transition-all duration-500"
@@ -150,7 +157,7 @@ export const WhatWeBuild = () => {
                     zIndex: -1,
                   }}
                 ></div>
-              </div>
+                </motion.div>
             );
           })}
         </div>

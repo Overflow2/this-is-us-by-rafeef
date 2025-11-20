@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 import { Code, Lightbulb, Sparkles } from 'lucide-react';
 
@@ -46,16 +47,17 @@ export const Team = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(181,23,158,0.05),transparent_50%)]"></div>
 
       <div className="relative z-10 max-w-7xl w-full">
-        <div
-          className={`text-center mb-20 transition-all duration-1000 ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+        <motion.div
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+          transition={{ duration: 0.6 }}
         >
           <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 mb-4">
             The Founders
           </h2>
           <p className="text-cyan-100/60 text-lg md:text-xl">Dreamers disguised as devs</p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {team.map((member, index) => {
@@ -63,7 +65,7 @@ export const Team = () => {
             const slideDirection = index === 0 ? '-translate-x-32' : index === 2 ? 'translate-x-32' : 'translate-y-32';
 
             return (
-              <div
+              <motion.div
                 key={member.id}
                 className={`relative group transition-all duration-1000 ${
                   isInView ? 'opacity-100 translate-x-0 translate-y-0' : `opacity-0 ${slideDirection}`
@@ -71,6 +73,7 @@ export const Team = () => {
                 style={{
                   transitionDelay: `${index * 150}ms`,
                 }}
+                whileHover={{ y: -6 }}
               >
                 <div
                   className="relative rounded-3xl p-8 backdrop-blur-2xl border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden group-hover:scale-105"
@@ -146,7 +149,7 @@ export const Team = () => {
                     transform: 'translateY(10px)',
                   }}
                 ></div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
+import { useIsTouchDevice } from '../hooks/useIsTouchDevice';
 
 export const CustomCursor = () => {
+  const isTouchDevice = useIsTouchDevice();
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -8,6 +10,14 @@ export const CustomCursor = () => {
   const mouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    if (isTouchDevice) {
+      setIsVisible(false);
+    }
+  }, [isTouchDevice]);
+
+  useEffect(() => {
+    if (isTouchDevice) return;
+
     const updatePosition = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
       if (!isVisible) setIsVisible(true);
@@ -46,7 +56,7 @@ export const CustomCursor = () => {
         rafId.current = null;
       }
     };
-  }, [isVisible]);
+  }, [isVisible, isTouchDevice]);
 
   // Reset RAF on visibility change
   useEffect(() => {
@@ -56,7 +66,7 @@ export const CustomCursor = () => {
     }
   }, [isVisible]);
 
-  if (!isVisible) return null;
+  if (!isVisible || isTouchDevice) return null;
 
   return (
     <>
