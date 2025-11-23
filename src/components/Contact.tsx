@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
-import { Send, Github, Twitter, Linkedin } from 'lucide-react';
+import { Send, Mail, Instagram, Facebook } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 export const Contact = () => {
@@ -324,19 +324,23 @@ export const Contact = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           {[
-            { icon: Github, color: '#00FFFF', href: '#' },
-            { icon: Twitter, color: '#6366F1', href: '#' },
-            { icon: Linkedin, color: '#B5179E', href: '#' },
+            { icon: Instagram, color: '#E1306C', label: 'Instagram', href: 'https://instagram.com/thisisusgroup' },
+            { icon: Mail, color: '#EA4335', label: 'gmail', href: 'mailto:thisisus533@gmail.com' },
+            { icon: Facebook, color: '#4267B2', label: 'Facebook', href: 'https://facebook.com/thisisusgroup' },
           ].map((social, index) => {
             const Icon = social.icon;
             return (
               <a
                 key={index}
                 href={social.href}
+                target={social.label === 'gmail' ? '_self' : '_blank'}
+                rel="noopener noreferrer"
                 className="group relative w-14 h-14 rounded-full backdrop-blur-xl border border-white/10 hover:border-white/30 flex items-center justify-center transition-all duration-300 hover:scale-110"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(5, 11, 22, 0.8))',
                 }}
+                aria-label={social.label}
+                title={social.label}
               >
                 <Icon className="w-6 h-6 text-cyan-100/60 group-hover:text-cyan-100 transition-colors" />
                 <div

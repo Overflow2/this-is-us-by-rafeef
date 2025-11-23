@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useRef } from 'react';
+import { motion, useScroll } from 'framer-motion';
+import { Sparkles, Code, Cpu } from 'lucide-react';
 
 const founders = [
   {
@@ -6,370 +8,153 @@ const founders = [
     initial: 'M',
     name: 'Marjan Ahsan',
     role: 'Catalyst',
-    description:
-      'A creative force with an obsession for innovation. Drives the conceptual direction of our projects.',
+    description: 'A creative force with an obsession for innovation. Drives the conceptual direction of our projects. We engineer feelings, not just features.',
     skills: ['Strategic Thinking', 'Creative Ideas', 'Future Planning'],
-    achievements: [
-      { label: 'Concept Systems', value: 48 },
-      { label: 'Patents Filed', value: 12 },
-    ],
-    milestones: [
-      { year: '2019', title: 'Vision Protocol', detail: 'Mapped first adaptive product strategy.' },
-      { year: '2021', title: 'Mycelium Grid', detail: 'Launched cross-industry co-creation lab.' },
-    ],
-    quote: 'We engineer feelings, not just features.',
     accent: '#ec4899',
+    icon: Sparkles
   },
   {
     id: 'erfan',
     initial: 'E',
     name: 'Erfan Naor Marlin',
     role: 'Architect',
-    description: 'The technical mastermind who transforms ideas into reality. Expertise in system design.',
+    description: 'The technical mastermind who transforms ideas into reality. Expertise in system design. Elegance is latency you never notice.',
     skills: ['System Design', 'Technical Architecture', 'Problem Solving'],
-    achievements: [
-      { label: 'Systems Deployed', value: 63 },
-      { label: 'Latency Reduced', value: 87, suffix: '%' },
-    ],
-    milestones: [
-      { year: '2018', title: 'Nova Kernel', detail: 'Shipped self-healing infra runtime.' },
-      { year: '2022', title: 'Helix Mesh', detail: 'Unified collaboration surface across orgs.' },
-    ],
-    quote: 'Elegance is latency you never notice.',
     accent: '#06b6d4',
+    icon: Code
   },
   {
     id: 'rafael',
     initial: 'R',
-    name: 'Rafael Ammar',
+    name: 'Rafeef Ammar',
     role: 'Visionary',
-    description: 'The driving force that brings ideas to life. Passion for execution and tangible solutions.',
+    description: 'The driving force that brings ideas to life. Passion for execution and tangible solutions. Momentum happens when trust meets clarity.',
     skills: ['Project Execution', 'Team Leadership', 'Process Optimization'],
-    achievements: [
-      { label: 'Launches Led', value: 37 },
-      { label: 'Teams Mentored', value: 19 },
-    ],
-    milestones: [
-      { year: '2020', title: 'Pulse Framework', detail: 'Scaled delivery rituals globally.' },
-      { year: '2023', title: 'Flux Guild', detail: 'Built the company-wide outcomes radar.' },
-    ],
-    quote: 'Momentum happens when trust meets clarity.',
     accent: '#f5f5f5',
+    icon: Cpu
   },
 ];
 
-const philosophyWords = ['Precision', 'Empathy', 'Momentum', 'Integrity', 'Play', 'Courage'];
-
-const connectionMatrix = [
-  { from: 'Marjan', to: 'Erfan', label: 'Vision → Architecture' },
-  { from: 'Erfan', to: 'Rafael', label: 'Systems → Delivery' },
-  { from: 'Rafael', to: 'Marjan', label: 'Execution → Future' },
-];
-
-const useCountUp = (target: number, active: boolean) => {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    const duration = 1200;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      setValue(Math.floor(progress * target));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }, [target, active]);
-  return value;
-};
-
 export const Founders = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [activeId, setActiveId] = useState(founders[0].id);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particleTarget = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-
-  useEffect(() => window.scrollTo(0, 0), []);
-
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!heroRef.current) return;
-      const { innerWidth, innerHeight } = window;
-      const offsetX = (event.clientX / innerWidth - 0.5) * 20;
-      const offsetY = (event.clientY / innerHeight - 0.5) * 20;
-      heroRef.current.style.setProperty('--hero-offset-x', `${offsetX}px`);
-      heroRef.current.style.setProperty('--hero-offset-y', `${offsetY}px`);
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    const handleOrientation = (event: DeviceOrientationEvent) => {
-      if (event.beta == null || event.gamma == null) return;
-      setTilt({
-        x: event.beta * 0.05,
-        y: event.gamma * 0.05,
-      });
-    };
-    window.addEventListener('deviceorientation', handleOrientation);
-    return () => window.removeEventListener('deviceorientation', handleOrientation);
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    let animationId: number;
-    const particles = Array.from({ length: 80 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-    }));
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    const render = () => {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((particle) => {
-        const dx = particleTarget.current.x - particle.x;
-        const dy = particleTarget.current.y - particle.y;
-        particle.vx += dx * 0.0005;
-        particle.vy += dy * 0.0005;
-        particle.vx *= 0.98;
-        particle.vy *= 0.98;
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = theme === 'dark' ? 'rgba(6,182,212,0.6)' : 'rgba(15,23,42,0.4)';
-        ctx.fill();
-      });
-      animationId = requestAnimationFrame(render);
-    };
-    render();
-    return () => {
-      window.removeEventListener('resize', resize);
-      cancelAnimationFrame(animationId);
-    };
-  }, [theme]);
-
-  useEffect(() => {
-    const activeCard = document.querySelector<HTMLElement>(`[data-founder="${activeId}"]`);
-    if (!activeCard) return;
-    const rect = activeCard.getBoundingClientRect();
-    particleTarget.current = {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
-    };
-  }, [activeId]);
-
-  useEffect(() => {
-    const cards = document.querySelectorAll('.founder-card');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    cards.forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
-  }, []);
-
-  const playVoice = (quote: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(quote);
-      utterance.rate = 0.95;
-      window.speechSynthesis.speak(utterance);
-    } else {
-      alert(quote);
-    }
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX == null) return;
-    const diff = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(diff) > 80) {
-      const currentIndex = founders.findIndex((f) => f.id === activeId);
-      const nextIndex = diff < 0 ? currentIndex + 1 : currentIndex - 1;
-      if (nextIndex >= 0 && nextIndex < founders.length) {
-        setActiveId(founders[nextIndex].id);
-      }
-    }
-    setTouchStartX(null);
-  };
-
-  const connectionText = useMemo(
-    () =>
-      connectionMatrix.filter((conn) =>
-        conn.from.startsWith(founders.find((f) => f.id === activeId)?.name.split(' ')[0] || '')
-      ),
-    [activeId]
-  );
+  const containerRef = useRef<HTMLDivElement>(null);
+  useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
   return (
-    <section className={`founders-shell ${theme === 'dark' ? 'theme-dark' : 'theme-light'}`}>
-      <canvas ref={canvasRef} className="founders-canvas" />
+    <section
+      ref={containerRef}
+      className="relative min-h-screen bg-[#020205] text-white overflow-hidden py-32 px-6"
+    >
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-[#020205]/80 to-[#020205]" />
 
-      <div className="theme-toggle">
-        <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-        </button>
+        {/* Animated Orbs */}
+        <div className="absolute top-[10%] right-[10%] w-[500px] h-[500px] bg-purple-500/20 blur-[120px] rounded-full animate-pulse-slow" />
+        <div className="absolute bottom-[10%] left-[10%] w-[500px] h-[500px] bg-cyan-500/20 blur-[120px] rounded-full animate-pulse-slow" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/10 blur-[150px] rounded-full animate-pulse-slow" style={{ animationDelay: '4s' }} />
       </div>
 
-      <div
-        ref={heroRef}
-        className="founders-hero"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className="hero-content">
-          <p className="eyebrow">THE ARCHITECTS OF TOMORROW</p>
-          <h1>The Digital Sculpture Garden of Talent</h1>
-          <p className="hero-subtitle">
-            Three minds, one sentient studio. Each founder is a living system, evolving in sync.
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-32"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-5xl md:text-7xl font-orbitron font-bold mb-6 tracking-tight">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-cyan-400">
+              The Architects
+            </span>
+          </h1>
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+            Three minds, one sentient studio.
           </p>
-        </div>
-      </div>
+        </motion.div>
 
-      <div className="philosophy-particles">
-        {philosophyWords.map((word, index) => (
-          <span key={word} style={{ animationDelay: `${index * 0.4}s` }}>
-            {word}
-          </span>
-        ))}
-      </div>
-
-      <div className="founders-grid">
-        {founders.map((founder) => {
-          const isActive = founder.id === activeId;
-          return (
-            <article
+        {/* Founders List - Alternating Layout */}
+        <div className="space-y-32">
+          {founders.map((founder, index) => (
+            <motion.div
               key={founder.id}
-              className={`founder-card ${isActive ? 'active' : ''}`}
-              data-founder={founder.id}
-              style={{
-                transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-              }}
-              onMouseEnter={() => setActiveId(founder.id)}
-              onFocus={() => setActiveId(founder.id)}
-              onClick={() => playVoice(founder.quote)}
+              className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 lg:gap-24`}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="holo-portrait">
-                <div className="portrait-ring" style={{ borderColor: founder.accent }} />
-                <div className="portrait-core" />
-                <div className="portrait-label">{founder.initial}</div>
+              {/* Background Splash */}
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full opacity-10 blur-[100px] -z-10 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle, ${founder.accent} 0%, transparent 70%)`,
+                }}
+              />
+
+              {/* Image/Avatar Side */}
+              <div className="w-full lg:w-1/2 flex justify-center">
+                <div className="relative w-64 h-64 md:w-80 md:h-80">
+                  {/* Rotating Rings */}
+                  <div className="absolute inset-0 border border-white/10 rounded-full animate-spin-slow" style={{ animationDuration: '20s' }} />
+                  <div className="absolute inset-4 border border-white/5 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '15s' }} />
+
+                  {/* Glowing Core */}
+                  <div
+                    className="absolute inset-0 rounded-full opacity-20 blur-3xl"
+                    style={{ background: founder.accent }}
+                  />
+
+                  {/* Avatar Container */}
+                  <div className="absolute inset-8 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-xl flex items-center justify-center overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-50" />
+                    <founder.icon
+                      className="w-24 h-24 transition-transform duration-700 group-hover:scale-110"
+                      style={{ color: founder.accent }}
+                    />
+
+                    {/* Tech Overlay */}
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-30" />
+                  </div>
+
+                  {/* Floating Badge */}
+                  <div
+                    className="absolute -bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full glass-panel border border-white/10 text-sm font-mono tracking-widest uppercase"
+                    style={{ color: founder.accent }}
+                  >
+                    {founder.role}
+                  </div>
+                </div>
               </div>
 
-              <div className="founder-info">
-                <p className="founder-role" style={{ color: founder.accent }}>
-                  {founder.role}
+              {/* Description Side */}
+              <div className="w-full lg:w-1/2 text-center lg:text-left">
+                <h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-6">
+                  {founder.name}
+                </h2>
+                <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-transparent mb-8 mx-auto lg:mx-0" />
+
+                <p className="text-lg text-slate-300 leading-relaxed mb-8 font-light">
+                  {founder.description}
                 </p>
-                <h2 className="founder-name">{founder.name}</h2>
-                <p className="founder-description">{founder.description}</p>
-              </div>
 
-              <div className="skill-web">
-                <svg viewBox="0 0 200 160">
-                  <circle cx="100" cy="80" r="6" className="skill-node center" />
-                  {founder.skills.map((skill, index) => {
-                    const angle = (index / founder.skills.length) * Math.PI * 2;
-                    const radius = 55;
-                    const x = 100 + Math.cos(angle) * radius;
-                    const y = 80 + Math.sin(angle) * radius;
-                    return (
-                      <g key={skill} className={`skill-node-group ${isActive ? 'connected' : ''}`}>
-                        <line x1="100" y1="80" x2={x} y2={y} className="skill-link" />
-                        <circle cx={x} cy={y} r="5" className="skill-node" />
-                        <text x={x} y={y - 12} className="skill-label">
-                          {skill}
-                        </text>
-                      </g>
-                    );
-                  })}
-                </svg>
+                <div className="flex flex-wrap justify-center lg:justify-start gap-3">
+                  {founder.skills.map(skill => (
+                    <span
+                      key={skill}
+                      className="px-4 py-2 rounded-lg bg-white/5 border border-white/5 text-sm text-slate-400 hover:border-cyan-500/30 hover:text-cyan-300 transition-colors cursor-default"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
-
-              <div className="achievements">
-                {founder.achievements.map((metric) => {
-                  const display = useCountUp(metric.value, isActive);
-                  return (
-                    <div key={metric.label} className="achievement">
-                      <span className="achievement-value">
-                        {display}
-                        {metric.suffix || ''}
-                      </span>
-                      <span className="achievement-label">{metric.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </article>
-          );
-        })}
-      </div>
-
-      <div className="connection-visual">
-        <h3>Connection Visualization</h3>
-        <div className="connection-map">
-          {connectionMatrix.map((conn) => (
-            <div key={`${conn.from}-${conn.to}`} className="connection-link">
-              <span>{conn.from}</span>
-              <div className="connection-line">
-                <div className="connection-flow" />
-              </div>
-              <span>{conn.to}</span>
-              <p>{conn.label}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
-        <div className="connection-active">
-          {connectionText.length ? connectionText[0].label : 'Synchronized thinking in motion.'}
-        </div>
-      </div>
-
-      <div className="timeline-section">
-        <h3>Journey Timeline</h3>
-        <div className="timeline-track">
-          {founders.flatMap((founder) =>
-            founder.milestones.map((milestone) => (
-              <div key={`${founder.id}-${milestone.year}`} className="timeline-card">
-                <p className="timeline-year">{milestone.year}</p>
-                <p className="timeline-title">{milestone.title}</p>
-                <p className="timeline-detail">{milestone.detail}</p>
-                <span className="timeline-owner">{founder.name}</span>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-
-      <div className="collaboration-map">
-        <h3>Collaboration Map</h3>
-        <div className="collaboration-grid">
-          <div className="collab-node">Vision Lab</div>
-          <div className="collab-node active">Systems Forge</div>
-          <div className="collab-node">Delivery Orbit</div>
         </div>
       </div>
     </section>

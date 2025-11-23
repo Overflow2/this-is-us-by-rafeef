@@ -1,119 +1,101 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const lines = [
-  '> Initializing: ThisIsUs',
-  '> Loading core modules...',
-  '> Connecting founders...',
-  '> Launching innovation protocol...',
-  '> System ready.',
+  'Initializing system core...',
+  'Loading neural architecture...',
+  'Establishing secure connection...',
+  'Syncing founder nodes...',
+  'System ready.',
 ];
 
 export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [currentLine, setCurrentLine] = useState(0);
-  const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
     if (currentLine < lines.length) {
       const timeout = setTimeout(() => {
-        setDisplayedLines((prev) => [...prev, lines[currentLine]]);
         setCurrentLine((prev) => prev + 1);
-      }, 400);
-
+      }, 500);
       return () => clearTimeout(timeout);
     } else {
-      // Remove the additional delays to ensure immediate transition
       const completeTimeout = setTimeout(() => {
         setIsComplete(true);
-        onComplete(); // Call onComplete immediately without additional delay
-      }, 300); // Reduced delay for smoother transition
-
+        setTimeout(onComplete, 500); // Wait for exit animation
+      }, 800);
       return () => clearTimeout(completeTimeout);
     }
   }, [currentLine, onComplete]);
 
   return (
-    <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-[#050B16] transition-opacity duration-300 ${
-        isComplete ? 'opacity-0' : 'opacity-100'
-      }`}
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#020205] overflow-hidden"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: isComplete ? 0 : 1 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      onAnimationComplete={() => {
+        if (isComplete) onComplete();
+      }}
     >
-      <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px',
-          }}
-        ></div>
+      {/* Background Effects */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 blur-[100px] rounded-full animate-pulse-slow" />
       </div>
 
-      <div className="relative z-10 max-w-2xl w-full px-6">
-        <div className="mb-12 text-center">
-          <div className="inline-flex items-center gap-3 mb-8">
-            {[...Array(3)].map((_, i) => (
-              <div
-                key={i}
-                className="relative"
-                style={{
-                  animation: 'assemble 2s ease-out forwards',
-                  animationDelay: `${i * 0.2}s`,
-                  opacity: 0,
-                }}
-              >
-                <div
-                  className="w-4 h-12 backdrop-blur-md border-2 rounded"
-                  style={{
-                    borderColor: i === 0 ? '#00FFFF' : i === 1 ? '#6366F1' : '#B5179E',
-                    background: `linear-gradient(135deg, ${
-                      i === 0 ? '#00FFFF' : i === 1 ? '#6366F1' : '#B5179E'
-                    }20, transparent)`,
-                    boxShadow: `0 0 20px ${i === 0 ? '#00FFFF' : i === 1 ? '#6366F1' : '#B5179E'}40`,
-                  }}
-                ></div>
-              </div>
-            ))}
+      <div className="relative z-10 w-full max-w-md px-6">
+        {/* Central Loader */}
+        <div className="flex justify-center mb-12">
+          <div className="relative w-24 h-24">
+            {/* Outer Ring */}
+            <div className="absolute inset-0 border-2 border-cyan-500/20 rounded-full animate-spin-slow" />
+            <div className="absolute inset-0 border-t-2 border-cyan-400 rounded-full animate-spin-slow" style={{ animationDuration: '3s' }} />
+
+            {/* Inner Ring */}
+            <div className="absolute inset-4 border-2 border-purple-500/20 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
+            <div className="absolute inset-4 border-b-2 border-purple-500 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '4s' }} />
+
+            {/* Core */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse shadow-[0_0_15px_rgba(255,255,255,0.8)]" />
+            </div>
           </div>
         </div>
 
-        <div className="font-mono text-cyan-300/80 space-y-2">
-          {displayedLines.map((line, index) => (
-            <div
+        {/* Text Output */}
+        <div className="font-mono text-sm space-y-2 min-h-[160px]">
+          {lines.map((line, index) => (
+            <motion.div
               key={index}
-              className="opacity-0 animate-fade-in"
-              style={{
-                animationDelay: `${index * 0.1}s`,
-                animationFillMode: 'forwards',
+              initial={{ opacity: 0, x: -10 }}
+              animate={{
+                opacity: index <= currentLine ? (index === currentLine ? 1 : 0.5) : 0,
+                x: index <= currentLine ? 0 : -10
               }}
+              className="flex items-center gap-3"
             >
-              <p className="text-sm md:text-base flex items-center gap-2">
-                <span className="text-cyan-400">{'>'}</span>
+              <span className="text-cyan-500/50">{`0${index + 1}`}</span>
+              <span className={index === currentLine ? "text-cyan-300" : "text-slate-500"}>
                 {line}
-                {index === displayedLines.length - 1 && currentLine < lines.length && (
-                  <span className="inline-block w-2 h-4 bg-cyan-400 ml-1 animate-blink"></span>
-                )}
-              </p>
-            </div>
+              </span>
+              {index === currentLine && (
+                <span className="w-1.5 h-4 bg-cyan-400 animate-blink ml-auto" />
+              )}
+            </motion.div>
           ))}
         </div>
 
-        {currentLine >= lines.length && (
-          <div className="mt-8 flex justify-center">
-            <div
-              className="w-64 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full opacity-0 animate-fade-in"
-              style={{
-                animationDelay: '0.5s',
-                animationFillMode: 'forwards',
-              }}
-            >
-              <div className="w-full h-full bg-gradient-to-r from-cyan-400 to-transparent rounded-full animate-loading-bar"></div>
-            </div>
-          </div>
-        )}
+        {/* Progress Bar */}
+        <div className="mt-8 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500"
+            initial={{ width: "0%" }}
+            animate={{ width: `${Math.min((currentLine / (lines.length - 1)) * 100, 100)}%` }}
+            transition={{ duration: 0.5 }}
+          />
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
